@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: report-listener
+  profiles:
+    default: prod
+  # Configuracion para conectarse a kafka
+  cloud:
+    function:
+      definition: consumerReport
+    stream:
+      kafka:
+        binder:
+          brokers: ${BROKER_URL}
+      bindings:
+        consumerReport-in-0: # consumerReport-out -> consumerReport <- consumerReport-in
+          destination: consumerReport
+  mongodb:
+    host: ${MONGO_HOST}
+    port: 27017
+    database: admin
+    username: sa
+    password: sa
+    authentication-database: admin
+# ---------------------------
+server:
+  port: 0
+eureka:
+  instance:
+    instance-id: "${spring.application.name}:${random.value}"
+  client:
+    service-url:
+      defaultZone: ${EUREKA_URL}

@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: report-ms
+  profiles:
+    default: default
+  config:
+    import: "optional:configserver:${CONFIG_SERVER_HOST}"
+
+# Configuracion para conectarse a kafka
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers: ${BROKER_URL}
+      bindings:
+        consumerReport-out-0: # consumerReport-out -> consumerReport <- consumerReport-in
+          destination: consumerReport
+# ---------------------------
+server:
+  servlet:
+    context-path: /report-ms
+  port: 7070
+eureka:
+  instance:
+    instance-id: "${spring.application.name}:${random.value}"
+  client:
+    service-url:
+      defaultZone: ${EUREKA_URL}
